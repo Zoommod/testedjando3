@@ -5,11 +5,32 @@ from decouple import config
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ['username', 'email', 'first_name', 'last_name', 'get_groups']
-    fields = ('username', 'email', ('first_name', 'last_name'), 'groups', 'date_joined')
     list_filter = ['groups']
     readonly_fields = ['date_joined']
     search_fields = ['email', 'username', 'first_name', 'last_name']
     search_help_text = 'Pesquisa realizada por nome, email e usuário (matrícula)'
+
+    fieldsets = [
+        (
+            'Informações pessoais',
+            {
+                "fields": ['username', 'email', ('first_name', 'last_name')],
+            },
+        ),
+        (
+            'Cargos do sistema',
+            {
+                "fields": ['groups'],
+            },
+        ),
+        (
+            "Informações extra",
+            {
+                "classes": ["collapse"],
+                "fields": ['date_joined'],
+            },
+        ),
+    ]
 
     def get_groups(self, obj):
         cargos = ', '.join([group.name for group in obj.groups.all()])
