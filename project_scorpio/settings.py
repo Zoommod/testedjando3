@@ -143,15 +143,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 from decouple import config
 
-# modificação manual
-# EMAIL_BACKEND = 'django.core.email.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-# modificação sofisticada
-# if DEBUG:
-#     EMAIL_BACKEND = 'django.core.email.backends.console.EmailBackend'
-# else: 
-#     EMAIL_BACKEND = 'django.core.email.backends.smtp.EmailBackend'
 
 # configurações necessárias para envio do email pelo smtp
 DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
