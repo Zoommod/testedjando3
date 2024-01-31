@@ -35,10 +35,6 @@ DATABASES = {
     }
 }
 
-# Adicione ou substitua esta configuração para usar o adaptador psycopg2
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
-
-
 # Configuração opcional para usar o Knex como backend de autenticação
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
