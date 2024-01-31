@@ -1,0 +1,3 @@
+[submodule "project_scorpio"]
+	path = project_scorpio
+	url = https://github.com/Zoommod/testedjando3.git
