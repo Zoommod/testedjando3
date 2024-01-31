@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from django.core.mail import send_mail, EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives
 from decouple import config
 
 class UserAdmin(admin.ModelAdmin):
@@ -31,6 +31,15 @@ class UserAdmin(admin.ModelAdmin):
             },
         ),
     ]
+
+    # Para mudar o label dos formulários no site adm
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+
+        # Altere o label do campo
+        form.base_fields['groups'].label = 'Cargos'
+
+        return form
 
     def get_groups(self, obj):
         cargos = ', '.join([group.name for group in obj.groups.all()])
