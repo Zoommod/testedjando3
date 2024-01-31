@@ -20,7 +20,7 @@ class UserAdmin(admin.ModelAdmin):
         (
             'Cargos do sistema',
             {
-                "fields": [('groups', 'is_staff')],
+                "fields": ['groups'],
             },
         ),
         (
