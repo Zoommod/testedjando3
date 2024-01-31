@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from decouple import config
 
 class UserAdmin(admin.ModelAdmin):
@@ -20,7 +20,7 @@ class UserAdmin(admin.ModelAdmin):
         (
             'Cargos do sistema',
             {
-                "fields": ['groups'],
+                "fields": [('groups', 'is_staff')],
             },
         ),
         (
@@ -46,13 +46,17 @@ class UserAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
         # Envie um e-mail ao usuário com a senha gerada
-        send_mail(
-            "O sistema da PROEX te recebe de braços abertos!",
+        msg = EmailMultiAlternatives(
+            "O sistema da PROEX te recebe de braços abertos!", 
             f"O seu usuário é: {obj.username} e sua senha de primeiro acesso é: {temp_password}",
             config('EMAIL_HOST_USER'),
             [obj.email],
-            fail_silently=False,
         )
+        msg.attach_alternative(
+            f"<h1>Olá!</h1><p>Essas são suas crendenciais para no novo sistema da PROEX:</p><br/><strong>Usuário: </strong> <p>{obj.username}</p><br/><strong>Senha: </strong> <p>{temp_password}</p><br/> <p>Acesse o sistema em: <a href='http://localhost:8000/admin'>http://proex.com</a></p>", 
+            "text/html"
+        )
+        msg.send(fail_silently=False)
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
