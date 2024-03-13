@@ -1,5 +1,6 @@
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 from django.contrib import admin
 from decouple import config
 
@@ -87,7 +88,7 @@ class UserAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         # Gere uma senha de primeiro acesso e a atribua ao usuário
         temp_password = User.objects.make_random_password()
-        obj.set_password(temp_password)
+        obj.password = make_password(temp_password, salt=None, hasher='default')
 
         # Salve o usuário
         super().save_model(request, obj, form, change)
